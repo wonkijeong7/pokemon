@@ -10,8 +10,10 @@ target 'Pokemon' do
 end
 
 target 'PokemonTests' do
-  pod 'Quick'
-  pod 'Nimble'
+  pod 'RxSwift'
+  pod 'ReactorKit'
+  pod 'RxTest'
+  pod 'RxBlocking'
 end
 
 post_install do |installer|
