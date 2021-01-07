@@ -13,7 +13,14 @@ struct PokemonDescription {
     let thumbnail: Data?
 }
 
-protocol PokemonUseCase {
+protocol PokemonDescriptionUseCase {
     func description(id: PokemonId) -> Single<PokemonDescription>
-    func knownLocation(id: PokemonId) -> Maybe<Location>
+}
+
+struct PokemonDescriptionDefaultUseCase: PokemonDescriptionUseCase {
+    let descriptionRepository: PokemonDescriptionRepository
+    
+    func description(id: PokemonId) -> Single<PokemonDescription> {
+        return descriptionRepository.description(id: id)
+    }
 }
