@@ -1,0 +1,57 @@
+PODS:
+  - Alamofire (5.2.2)
+  - Differentiator (4.0.1)
+  - Nimble (9.0.0)
+  - Quick (3.0.0)
+  - ReactorKit (2.1.0):
+    - RxSwift (~> 5.0)
+    - WeakMapTable (~> 1.1)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxDataSources (4.0.1):
+    - Differentiator (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.1)
+  - WeakMapTable (1.1.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - Nimble
+  - Quick
+  - ReactorKit
+  - RxCocoa
+  - RxDataSources
+  - RxSwift
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Differentiator
+    - Nimble
+    - Quick
+    - ReactorKit
+    - RxCocoa
+    - RxDataSources
+    - RxRelay
+    - RxSwift
+    - WeakMapTable
+
+SPEC CHECKSUMS:
+  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
+  Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
+  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
+  ReactorKit: 12a93358c554bb3f167b16b14c40374fa9cd5acd
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  WeakMapTable: d0327eda092be6a8f7c532942ae98dc7948f5d32
+
+PODFILE CHECKSUM: 231dd409afea4c1aa94c2f43fb960389302e7a32
+
+COCOAPODS: 1.10.0
