@@ -22,6 +22,7 @@ struct PokemonDescription {
 protocol PokemonDescriptionUseCase {
     func updateMetadata() -> Completable
     
+    func name(id: PokemonId) -> Single<String>
     func description(id: PokemonId) -> Single<PokemonDescription>
     func thumbnail(id: PokemonId) -> Maybe<Data>
 }
@@ -31,6 +32,11 @@ struct PokemonDescriptionDefaultUseCase: PokemonDescriptionUseCase {
     
     func updateMetadata() -> Completable {
         return repository.updateMetadata()
+    }
+    
+    func name(id: PokemonId) -> Single<String> {
+        return repository.names(id: id)
+            .map { $0.representativeName }
     }
     
     func description(id: PokemonId) -> Single<PokemonDescription> {

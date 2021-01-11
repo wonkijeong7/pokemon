@@ -53,6 +53,7 @@ class MainContainer {
         
         viewController.reactor = reactor
         viewController.descriptionViewProvider = self
+        viewController.locationViewProvider = self
         
         return viewController
     }
@@ -65,6 +66,20 @@ extension MainContainer: PokemonDescriptionViewProvider {
                                                     showLocationObserver: openLocationObserver,
                                                     descriptionUseCase: descriptionUseCase(),
                                                     locationUseCase: locationUseCase())
+        
+        viewController.reactor = reactor
+        
+        return viewController
+    }
+}
+
+extension MainContainer: PokemonLocationViewProvider {
+    func locationViewController(id: PokemonId) -> UIViewController {
+        let viewController = UIStoryboard.initialViewController(name: "PokemonLocation", type: PokemonLocationViewController.self)
+        
+        let reactor = PokemonLocationViewReactor(pokemonId: id,
+                                                 descriptionUseCase: descriptionUseCase(),
+                                                 locationUseCase: locationUseCase())
         
         viewController.reactor = reactor
         

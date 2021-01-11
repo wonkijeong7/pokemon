@@ -20,6 +20,7 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
     @IBOutlet private weak var tableView: UITableView!
     
     var descriptionViewProvider: PokemonDescriptionViewProvider?
+    var locationViewProvider: PokemonLocationViewProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,9 +103,14 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
         
         let viewController = viewProvider.descriptionViewController(id: id, openLocationObserver: openLocationPublisher.asObserver())
         
-        self.present(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
     
     private func openLocationView(id: PokemonId) {
+        guard let viewProvider = locationViewProvider else { return }
+        
+        let viewController = viewProvider.locationViewController(id: id)
+        
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
