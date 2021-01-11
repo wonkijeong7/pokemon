@@ -14,4 +14,6 @@ struct Pokemon {
     
     let size: Double
     let weight: Double
+    
+    let thumbnailUrl: URL?
 }

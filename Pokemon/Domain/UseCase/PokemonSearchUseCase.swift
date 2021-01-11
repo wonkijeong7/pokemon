@@ -18,10 +18,10 @@ protocol PokemonSearchUseCase {
 }
 
 struct PokemonSearchDefaultUseCase: PokemonSearchUseCase {
-    let nameRepository: PokemonNameRepository
+    let repository: PokemonRepository
     
     func search(keyword: String) -> Single<[SearchedPokemon]> {
-        return nameRepository.allNames()
+        return repository.allNames()
             .map { self.matchNames(keyword: keyword, names: $0) }
     }
     

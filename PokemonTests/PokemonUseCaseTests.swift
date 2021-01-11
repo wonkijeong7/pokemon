@@ -13,12 +13,12 @@ import RxTest
 import RxBlocking
 
 class PokemonUseCaseTests: XCTestCase {
-    var nameRepository = TestNameRepository()
+    var repository = TestRepository()
 
     override func setUp() {
         super.setUp()
         
-        nameRepository.clear()
+        repository.clear()
     }
     
     func test_search_in_single_name() throws {
@@ -35,9 +35,9 @@ class PokemonUseCaseTests: XCTestCase {
             PokemonName(id: 10, representativeName: "캐터피", otherNames: [])
         ]
         
-        nameRepository.designatedNames = names
+        repository.designatedNames = names
         
-        let searchUseCase = PokemonSearchDefaultUseCase(nameRepository: nameRepository)
+        let searchUseCase = PokemonSearchDefaultUseCase(repository: repository)
         
         assertSearchResult(searchUseCase.search(keyword: "이상해"), expected: [1, 2, 3])
         assertSearchResult(searchUseCase.search(keyword: "리자"), expected: [5, 6])
@@ -58,9 +58,9 @@ class PokemonUseCaseTests: XCTestCase {
             PokemonName(id: 10, representativeName: "캐터피", otherNames: ["Caterpie"])
         ]
         
-        nameRepository.designatedNames = names
+        repository.designatedNames = names
         
-        let searchUseCase = PokemonSearchDefaultUseCase(nameRepository: nameRepository)
+        let searchUseCase = PokemonSearchDefaultUseCase(repository: repository)
         
         assertSearchResult(searchUseCase.search(keyword: "saur"), expected: [1, 2, 3])
         assertSearchResult(searchUseCase.search(keyword: "리자"), expected: [5, 6])
@@ -82,9 +82,9 @@ class PokemonUseCaseTests: XCTestCase {
             PokemonName(id: 10, representativeName: "캐터피", otherNames: ["Caterpie"])
         ]
         
-        nameRepository.designatedNames = names
+        repository.designatedNames = names
         
-        let searchUseCase = PokemonSearchDefaultUseCase(nameRepository: nameRepository)
+        let searchUseCase = PokemonSearchDefaultUseCase(repository: repository)
         
         assertSearchResult(searchUseCase.search(keyword: "CHAR"), expected: [4, 5, 6])
         assertSearchResult(searchUseCase.search(keyword: "char"), expected: [4, 5, 6])
@@ -98,22 +98,34 @@ class PokemonUseCaseTests: XCTestCase {
     }
 }
 
-class TestNameRepository: PokemonNameRepository {
+class TestRepository: PokemonRepository {
     var designatedNames: [PokemonName]?
     
     func clear() {
         designatedNames = []
     }
     
-    func update() -> Completable {
-        return .empty()
-    }
-    
     func allNames() -> Single<[PokemonName]> {
         return .just(designatedNames ?? [])
     }
     
-    func names(id: PokemonId) -> Single<[String]> {
-        return .just([])
+    func updateMetadata() -> Completable {
+        return .empty()
+    }
+    
+    func names(id: PokemonId) -> Single<PokemonName> {
+        return .error(TestRepositoryError.notAvailable)
+    }
+    
+    func pokemon(id: PokemonId) -> Single<Pokemon> {
+        return .error(TestRepositoryError.notAvailable)
+    }
+    
+    func thumbnail(id: PokemonId) -> Maybe<Data> {
+        return .error(TestRepositoryError.notAvailable)
+    }
+    
+    enum TestRepositoryError: Error {
+        case notAvailable
     }
 }
