@@ -16,6 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="gs8-uc-VwF">
+                                <rect key="frame" x="197" y="84" width="20" height="20"/>
+                            </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fip-h6-yge">
                                 <rect key="frame" x="20" y="84" width="374" height="151"/>
                                 <subviews>
@@ -183,14 +186,18 @@
                         <viewLayoutGuide key="safeArea" id="Dgx-Yb-Sii"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="gs8-uc-VwF" firstAttribute="centerX" secondItem="Dgx-Yb-Sii" secondAttribute="centerX" id="6aO-5N-EAj"/>
                             <constraint firstItem="Dgx-Yb-Sii" firstAttribute="trailing" secondItem="fip-h6-yge" secondAttribute="trailing" constant="20" id="YN2-dP-F80"/>
+                            <constraint firstItem="gs8-uc-VwF" firstAttribute="top" secondItem="fip-h6-yge" secondAttribute="top" id="YcR-Mx-66k"/>
                             <constraint firstItem="fip-h6-yge" firstAttribute="leading" secondItem="Dgx-Yb-Sii" secondAttribute="leading" constant="20" id="jxz-a9-EOW"/>
                             <constraint firstItem="fip-h6-yge" firstAttribute="top" secondItem="Dgx-Yb-Sii" secondAttribute="top" constant="40" id="sa7-fm-WLW"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="closeButton" destination="HDn-m3-Hzh" id="nGy-S8-xK3"/>
+                        <outlet property="contentView" destination="fip-h6-yge" id="w3L-BN-E2H"/>
                         <outlet property="heightLabel" destination="5so-nV-tKI" id="LLB-Ry-bdV"/>
+                        <outlet property="loadingView" destination="gs8-uc-VwF" id="R06-sD-Xev"/>
                         <outlet property="otherNamesContainerView" destination="G2H-I6-2Hf" id="IUw-FI-Wbo"/>
                         <outlet property="otherNamesLabel" destination="945-mD-6Ir" id="gKf-yD-WcR"/>
                         <outlet property="representativeNameLabel" destination="bKH-k4-E1G" id="ryi-et-jXe"/>

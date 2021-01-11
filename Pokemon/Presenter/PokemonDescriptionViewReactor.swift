@@ -17,13 +17,15 @@ class PokemonDescriptionViewReactor: Reactor {
     }
     
     enum Mutation {
+        case setLoading(Bool)
         case updateDescription(PokemonDescription)
-        case updateThumbnail(Data)
+        case updateThumbnail(Data?)
         case updateHasKnownLocations(Bool)
         case event(Event)
     }
     
     struct State {
+        var isLoading = true
         var description: PokemonDescription?
         var thumbnail: Data?
         var hasKnownLocations: Bool = false
@@ -32,6 +34,7 @@ class PokemonDescriptionViewReactor: Reactor {
     }
     
     enum Event {
+        case showErrorAlert
         case close
     }
     
@@ -74,14 +77,17 @@ extension PokemonDescriptionViewReactor {
                 
                 return .concat(.just(.updateDescription(description)),
                                self.fetchThumbnailMutation(),
-                               self.hasKnownLocationsMutation())
+                               self.hasKnownLocationsMutation(),
+                               .just(.setLoading(false)))
             }
+            .catchErrorJustReturn(.event(.showErrorAlert))
     }
     
     private func fetchThumbnailMutation() -> Observable<Mutation> {
         return descriptionUseCase.thumbnail(id: pokemonId)
             .asObservable()
             .map { .updateThumbnail($0) }
+            .catchErrorJustReturn(.updateThumbnail(nil))
     }
     
     private func hasKnownLocationsMutation() -> Observable<Mutation> {
@@ -89,6 +95,7 @@ extension PokemonDescriptionViewReactor {
             .andThen(locationUseCase.knownLocations(id: pokemonId))
             .asObservable()
             .map { .updateHasKnownLocations(!$0.isEmpty) }
+            .catchErrorJustReturn(.updateHasKnownLocations(false))
     }
     
     private func showLocationMutation() -> Observable<Mutation> {
@@ -110,6 +117,8 @@ extension PokemonDescriptionViewReactor {
         nextState.event = nil
         
         switch mutation {
+        case .setLoading(let loading):
+            nextState.isLoading = loading
         case .updateDescription(let description):
             nextState.description = description
         case .updateThumbnail(let thumbnail):
