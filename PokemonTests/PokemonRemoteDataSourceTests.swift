@@ -83,7 +83,9 @@ class PokemonMetadataServerDataSourceTests: XCTestCase {
 
 class PokemonServerDataSourceTests: XCTestCase {
     var requester = TestJsonRequester()
-    lazy var dataSource = PokemonServerDataSource(jsonRequester: requester)
+    var downloadRequester = MockDownloadRequester()
+    
+    lazy var dataSource = PokemonServerDataSource(jsonRequester: requester, downloadRequester: downloadRequester)
     
     override func setUp() {
         super.setUp()
@@ -264,5 +266,15 @@ class TestJsonRequester: JsonRequestable {
     
     enum TestError: Error {
         case emptyJson
+    }
+}
+
+class MockDownloadRequester: DownloadRequestable {
+    func download(url: URL) -> Single<Data> {
+        return .error(TestError.notAvailable)
+    }
+    
+    enum TestError: Error {
+        case notAvailable
     }
 }

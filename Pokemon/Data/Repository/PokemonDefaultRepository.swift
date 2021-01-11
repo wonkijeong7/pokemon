@@ -55,6 +55,13 @@ class PokemonDefaultRepository: PokemonRepository {
     }
     
     func thumbnail(id: PokemonId) -> Maybe<Data> {
-        return .empty()
+        return pokemonLocalDataSource.pokemon(id: id)
+            .flatMapMaybe { [pokemonRemoteDataSource] in
+                if let url = $0.thumbnailUrl {
+                    return pokemonRemoteDataSource.thumbnail(url: url).asMaybe()
+                } else {
+                    return .empty()
+                }
+            }
     }
 }

@@ -10,4 +10,6 @@ import RxSwift
 
 protocol PokemonRemoteDataSource {
     func pokemon(id: PokemonId) -> Single<Pokemon>
+    
+    func thumbnail(url: URL) -> Single<Data>
 }

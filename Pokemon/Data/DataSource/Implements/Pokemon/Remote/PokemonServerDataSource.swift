@@ -9,10 +9,13 @@ import Foundation
 import RxSwift
 
 class PokemonServerDataSource: PokemonRemoteDataSource, ModelRequestable {
-    var jsonRequester: JsonRequestable
+    let jsonRequester: JsonRequestable
+    let downloadRequester: DownloadRequestable
     
-    init(jsonRequester: JsonRequestable) {
+    init(jsonRequester: JsonRequestable,
+         downloadRequester: DownloadRequestable) {
         self.jsonRequester = jsonRequester
+        self.downloadRequester = downloadRequester
     }
     
     func pokemon(id: PokemonId) -> Single<Pokemon> {
@@ -25,5 +28,9 @@ class PokemonServerDataSource: PokemonRemoteDataSource, ModelRequestable {
                                weight: Double($0.weight),
                                thumbnailUrl: $0.thumbnailUrl)
             }
+    }
+    
+    func thumbnail(url: URL) -> Single<Data> {
+        return downloadRequester.download(url: url)
     }
 }
