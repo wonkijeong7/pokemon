@@ -1,5 +1,5 @@
 //
-//  PokemonDecodingTest.swift
+//  PokemonRemoteDataSourceTests.swift
 //  PokemonTests
 //
 //  Created by 정원기 on 2021/01/11.
@@ -78,6 +78,105 @@ class PokemonMetadataServerDataSourceTests: XCTestCase {
         let model = try fetch.toBlocking().single()
         
         XCTAssertTrue(model.isEmpty)
+    }
+}
+
+class PokemonServerDataSourceTests: XCTestCase {
+    var requester = TestJsonRequester()
+    lazy var dataSource = PokemonServerDataSource(jsonRequester: requester)
+    
+    override func setUp() {
+        super.setUp()
+        
+        requester.clear()
+    }
+    
+    func test_decoding() throws {
+        let expectedUrl = "https://www.kakaomobility.com/"
+        requester.testJson = [
+            "id": 1,
+            "height": 6,
+            "weight": 40,
+            "sprites": [
+                "front_default": expectedUrl
+            ]
+        ]
+        
+        let fetch = dataSource.pokemon(id: 1)
+        let model = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(model.id, 1)
+        XCTAssertEqual(model.height, 6)
+        XCTAssertEqual(model.weight, 40)
+        XCTAssertEqual(model.thumbnailUrl?.absoluteString, expectedUrl)
+    }
+    
+    func test_thumbnailUrl_is_nil_when_invalid_string() throws {
+        requester.testJson = [
+            "id": 1,
+            "height": 6,
+            "weight": 40,
+            "sprites": [
+                "front_default": "\\"
+            ]
+        ]
+        
+        let fetch = dataSource.pokemon(id: 1)
+        let model = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(model.id, 1)
+        XCTAssertEqual(model.height, 6)
+        XCTAssertEqual(model.weight, 40)
+        XCTAssertNil(model.thumbnailUrl)
+    }
+    
+    func test_thumbnailUrl_when_front_default_is_empty() throws {
+        let expectedUrl = "https://www.kakaomobility.com/"
+        requester.testJson = [
+            "id": 1,
+            "height": 6,
+            "weight": 40,
+            "sprites": [
+                "invalid_url1": "\\",
+                "invalid_url2": "",
+                "invalid_url3": "",
+                "value_url": expectedUrl,
+            ]
+        ]
+        
+        let fetch = dataSource.pokemon(id: 1)
+        let model = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(model.id, 1)
+        XCTAssertEqual(model.height, 6)
+        XCTAssertEqual(model.weight, 40)
+        XCTAssertEqual(model.thumbnailUrl?.absoluteString, expectedUrl)
+    }
+    
+    func test_thumbnailUrl_when_invalid_sprites_field() throws {
+        // sprites 필드가 String:String이 아닌 어떤 형태이더라도 valid한 한 가지 url을 가져오도록 하는 것이 맞지만
+        // 이를 만족시키려면 구현해야 할 것이 많아, 일단 String:String 형태가 아닌 경우에는 thumbnailUrl을 nil로 취급한다.
+        
+        let expectedUrl = "https://www.kakaomobility.com/"
+        requester.testJson = [
+            "id": 1,
+            "height": 6,
+            "weight": 40,
+            "sprites": [
+                "invalid_url1": "\\",
+                "invalid_url2": 1,
+                "invalid_url3": ["1", "2", "3"],
+                "value_url": expectedUrl,
+            ]
+        ]
+        
+        let fetch = dataSource.pokemon(id: 1)
+        let model = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(model.id, 1)
+        XCTAssertEqual(model.height, 6)
+        XCTAssertEqual(model.weight, 40)
+        XCTAssertNil(model.thumbnailUrl)
     }
 }
 

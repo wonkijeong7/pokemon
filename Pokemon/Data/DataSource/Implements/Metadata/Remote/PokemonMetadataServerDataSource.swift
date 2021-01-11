@@ -8,15 +8,6 @@
 import Foundation
 import RxSwift
 
-struct PokemonMetadataJsonModel: Decodable {
-    var pokemons: FailableDecodableArray<PokemonNameModel>
-}
-
-struct PokemonNameModel: Decodable {
-    let id: Int
-    let names: [String]
-}
-
 class PokemonMetadataServerDataSource: PokemonMetadataRemoteDataSource, ModelRequestable {
     let jsonRequester: JsonRequestable
     

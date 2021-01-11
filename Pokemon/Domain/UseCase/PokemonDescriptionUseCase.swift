@@ -13,7 +13,7 @@ struct PokemonDescription {
     let representativeName: String
     let otherNames: [String]
     
-    let size: Double
+    let height: Double
     let weight: Double
     
     let hasThumbnail: Bool
@@ -39,7 +39,7 @@ struct PokemonDescriptionDefaultUseCase: PokemonDescriptionUseCase {
                 PokemonDescription(id: id,
                                    representativeName: names.representativeName,
                                    otherNames: names.otherNames,
-                                   size: pokemon.size,
+                                   height: pokemon.height,
                                    weight: pokemon.weight,
                                    hasThumbnail: pokemon.thumbnailUrl != nil)
             }

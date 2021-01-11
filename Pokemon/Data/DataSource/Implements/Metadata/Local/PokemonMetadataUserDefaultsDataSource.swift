@@ -11,6 +11,7 @@ import RxSwift
 class PokemonMetadataUserDefaultsDataSource: PokemonMetadataLocalDataSource {
     let userDefaults: UserDefaults
     let dataKey: String
+    let scheduler = SerialDispatchQueueScheduler(qos: .default)
     
     init(userDefaults: UserDefaults, dataKey: String) {
         self.userDefaults = userDefaults
@@ -18,16 +19,28 @@ class PokemonMetadataUserDefaultsDataSource: PokemonMetadataLocalDataSource {
     }
     
     var names: Single<[PokemonName]> {
-        guard let encodedData = userDefaults.data(forKey: dataKey) else {
-            return .just([])
+        return Single.create { [userDefaults, dataKey] single -> Disposable in
+            let disposable = Disposables.create()
+            
+            guard let encodedData = userDefaults.data(forKey: dataKey) else {
+                single(.success([]))
+                return disposable
+            }
+            
+            do {
+                let names = try PropertyListDecoder().decode([PokemonName].self, from: encodedData)
+                
+                single(.success(names))
+            } catch {
+                userDefaults.removeObject(forKey: dataKey)
+                userDefaults.synchronize()
+                
+                single(.error(error))
+            }
+
+            return disposable
         }
-        
-        do {
-            return .just(try PropertyListDecoder().decode([PokemonName].self, from: encodedData))
-        } catch {
-            userDefaults.removeObject(forKey: dataKey)
-            return .just([])
-        }
+        .subscribeOn(scheduler)
     }
     
     func setNames(_ names: [PokemonName]) -> Completable {
@@ -44,12 +57,18 @@ class PokemonMetadataUserDefaultsDataSource: PokemonMetadataLocalDataSource {
             
             return Disposables.create()
         }
+        .subscribeOn(scheduler)
     }
     
     func clear() -> Completable {
-        userDefaults.removeObject(forKey: dataKey)
-        userDefaults.synchronize()
-        
-        return .empty()
+        return Completable.create { [userDefaults, dataKey] completable -> Disposable in
+            userDefaults.removeObject(forKey: dataKey)
+            userDefaults.synchronize()
+            
+            completable(.completed)
+            
+            return Disposables.create()
+        }
+        .subscribeOn(scheduler)
     }
 }

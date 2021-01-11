@@ -12,7 +12,7 @@ typealias PokemonId = Int
 struct Pokemon {
     let id: PokemonId
     
-    let size: Double
+    let height: Double
     let weight: Double
     
     let thumbnailUrl: URL?

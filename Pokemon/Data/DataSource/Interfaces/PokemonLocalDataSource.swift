@@ -12,3 +12,7 @@ protocol PokemonLocalDataSource {
     func pokemon(id: PokemonId) -> Single<Pokemon>
     func setPokemon(_ pokemon: Pokemon) -> Completable
 }
+
+enum PokemonLocalDataSourceError: Error {
+    case notExists(id: PokemonId)
+}

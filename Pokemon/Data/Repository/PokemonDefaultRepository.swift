@@ -47,7 +47,11 @@ class PokemonDefaultRepository: PokemonRepository {
     }
     
     func pokemon(id: PokemonId) -> Single<Pokemon> {
-        return .never()
+        return pokemonRemoteDataSource.pokemon(id: id)
+            .flatMap { [pokemonLocalDataSource] in
+                return pokemonLocalDataSource.setPokemon($0)
+                    .andThen(.just($0))
+            }
     }
     
     func thumbnail(id: PokemonId) -> Maybe<Data> {
