@@ -12,12 +12,13 @@ import ReactorKit
 class PokemonSearchViewReactor: Reactor {
     enum Action {
         case search(keyword: String)
-        case showPokemon(id: PokemonId)
+        case showPokemon(index: Int)
     }
     
     enum Mutation {
         case updateKeyword(keyword: String)
         case updateSearchResult([SearchedPokemon])
+        case resetSearchResult
         
         case event(Event)
     }
@@ -46,17 +47,50 @@ extension PokemonSearchViewReactor {
         switch action {
         case .search(let keyword):
             return searchMutation(keyword: keyword)
-        case .showPokemon(let id):
-            return .just(.event(.showPokemon(id: id)))
+        case .showPokemon(let index):
+            return selectMutation(index: index)
         }
     }
     
     private func searchMutation(keyword: String) -> Observable<Mutation> {
         let updateKeyword: Observable<Mutation> = .just(.updateKeyword(keyword: keyword))
+        
+        guard !keyword.isEmpty else {
+            return .concat(updateKeyword, .just(.resetSearchResult))
+        }
+        
         let search: Observable<Mutation> = searchUseCase.search(keyword: keyword)
             .asObservable()
             .map { .updateSearchResult($0) }
         
         return .concat(updateKeyword, search)
+    }
+    
+    private func selectMutation(index: Int) -> Observable<Mutation> {
+        guard index < currentState.searchResult.count else { return .empty() }
+        
+        let id = currentState.searchResult[index].id
+        
+        return .just(.event(.showPokemon(id: id)))
+    }
+}
+
+extension PokemonSearchViewReactor {
+    func reduce(state: State, mutation: Mutation) -> State {
+        var nextState = state
+        
+        nextState.event = nil
+        switch mutation {
+        case .updateKeyword(let keyword):
+            nextState.searchKeyword = keyword
+        case .updateSearchResult(let result):
+            nextState.searchResult = result
+        case .resetSearchResult:
+            nextState.searchResult = []
+        case .event(let event):
+            nextState.event = event
+        }
+        
+        return nextState
     }
 }

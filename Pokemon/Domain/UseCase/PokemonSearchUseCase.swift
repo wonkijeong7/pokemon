@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-struct SearchedPokemon {
+struct SearchedPokemon: Equatable {
     let id: PokemonId
     let matchedName: String
 }

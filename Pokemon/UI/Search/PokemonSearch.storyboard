@@ -43,19 +43,19 @@
                                     <constraint firstItem="9mv-lB-9Cg" firstAttribute="leading" secondItem="xQR-UA-fx0" secondAttribute="trailing" constant="10" id="tdC-Zz-Bwq"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QX9-m6-Cch">
-                                <rect key="frame" x="0.0" y="94" width="414" height="768"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QX9-m6-Cch">
+                                <rect key="frame" x="0.0" y="94" width="414" height="802"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchedPokemonTableViewCell" id="dGb-dw-OO2" customClass="SearchedPokemonTableViewCell" customModule="Pokemon" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dGb-dw-OO2" id="dHj-Rw-jm4">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USP-B1-suH">
-                                                    <rect key="frame" x="20" y="14.5" width="6" height="14.5"/>
+                                                    <rect key="frame" x="20" y="15" width="6" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -82,7 +82,7 @@
                             <constraint firstItem="QX9-m6-Cch" firstAttribute="leading" secondItem="wQe-bN-XlV" secondAttribute="leading" id="cQz-KR-qNe"/>
                             <constraint firstItem="QX9-m6-Cch" firstAttribute="top" secondItem="w1z-ru-tAW" secondAttribute="bottom" id="gJV-W3-dlm"/>
                             <constraint firstItem="wQe-bN-XlV" firstAttribute="trailing" secondItem="QX9-m6-Cch" secondAttribute="trailing" id="i2Q-T9-fVF"/>
-                            <constraint firstItem="wQe-bN-XlV" firstAttribute="bottom" secondItem="QX9-m6-Cch" secondAttribute="bottom" id="lBH-RJ-03j"/>
+                            <constraint firstAttribute="bottom" secondItem="QX9-m6-Cch" secondAttribute="bottom" id="lBH-RJ-03j"/>
                             <constraint firstItem="w1z-ru-tAW" firstAttribute="leading" secondItem="wQe-bN-XlV" secondAttribute="leading" id="mNE-KG-IHP"/>
                         </constraints>
                     </view>

@@ -6,26 +6,40 @@
 //
 
 import UIKit
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     lazy var mainContainer = MainContainer()
     
+    var disposeBag = DisposeBag()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        initWindow()
-        
-        let searchViewController = mainContainer.searchViewController()
-        let navigationController = UINavigationController(rootViewController: searchViewController)
-        
-        window?.rootViewController = navigationController
+        updateData()
+        initializeView()
         
         return true
     }
     
-    private func initWindow() {
+    private func updateData() {
+        mainContainer.descriptionUseCase().updateMetadata()
+            .subscribe()
+            .disposed(by: disposeBag)
+        
+        mainContainer.locationUseCase().updateKnownLocations()
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
+    
+    private func initializeView() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.makeKeyAndVisible()
+        
+        let searchViewController = mainContainer.searchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
+        
+        window.rootViewController = navigationController
         
         self.window = window
     }

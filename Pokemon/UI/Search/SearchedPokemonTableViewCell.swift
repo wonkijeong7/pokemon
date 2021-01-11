@@ -14,12 +14,17 @@ class SearchedPokemonTableViewCell: UITableViewCell {
     
     private var disposeBag = DisposeBag()
     
-    fileprivate let viewModelPublisher = BehaviorRelay<ViewModel?>(value: nil)
-    private lazy var viewModel = viewModelPublisher.asDriver()
-    
     struct ViewModel {
-        let highlightedText: String
+        let highlightedText: String?
         let text: String
+    }
+    
+    fileprivate let viewModelPublisher = BehaviorRelay<ViewModel?>(value: nil)
+    private lazy var viewModelObservable = viewModelPublisher.asDriver()
+    var viewModel: ViewModel? {
+        didSet {
+            viewModelPublisher.accept(viewModel)
+        }
     }
 
     override func awakeFromNib() {
@@ -29,7 +34,7 @@ class SearchedPokemonTableViewCell: UITableViewCell {
     }
     
     private func bindViewModel() {
-        viewModel
+        viewModelObservable
             .map { [weak self] viewModel -> NSAttributedString? in
                 self?.attributedText(viewModel: viewModel)
             }
@@ -55,18 +60,12 @@ extension SearchedPokemonTableViewCell {
         
         let attributed = NSMutableAttributedString(string: viewModel.text, attributes: Constants.defaultAttributes)
         
-        let range = (viewModel.text as NSString).range(of: viewModel.highlightedText)
-        
-        attributed.addAttributes(Constants.heightLightAttributes, range: range)
+        if let highlightedText = viewModel.highlightedText {
+            let range = (viewModel.text.lowercased() as NSString).range(of: highlightedText.lowercased())
+            
+            attributed.addAttributes(Constants.heightLightAttributes, range: range)
+        }
         
         return attributed
-    }
-}
-
-extension Reactive where Base: SearchedPokemonTableViewCell {
-    var viewModel: Binder<SearchedPokemonTableViewCell.ViewModel> {
-        return Binder(self.base) { view, viewModel in
-            view.viewModelPublisher.accept(viewModel)
-        }
     }
 }
