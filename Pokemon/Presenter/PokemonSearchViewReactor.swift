@@ -12,7 +12,8 @@ import ReactorKit
 class PokemonSearchViewReactor: Reactor {
     enum Action {
         case search(keyword: String)
-        case showPokemon(index: Int)
+        case showDescription(index: Int)
+        case showLocation(id: PokemonId)
     }
     
     enum Mutation {
@@ -31,7 +32,8 @@ class PokemonSearchViewReactor: Reactor {
     }
     
     enum Event {
-        case showPokemon(id: PokemonId)
+        case showDescription(id: PokemonId)
+        case showLocation(id: PokemonId)
     }
     
     var initialState = State()
@@ -47,8 +49,10 @@ extension PokemonSearchViewReactor {
         switch action {
         case .search(let keyword):
             return searchMutation(keyword: keyword)
-        case .showPokemon(let index):
+        case .showDescription(let index):
             return selectMutation(index: index)
+        case .showLocation(let id):
+            return .just(.event(.showLocation(id: id)))
         }
     }
     
@@ -71,7 +75,7 @@ extension PokemonSearchViewReactor {
         
         let id = currentState.searchResult[index].id
         
-        return .just(.event(.showPokemon(id: id)))
+        return .just(.event(.showDescription(id: id)))
     }
 }
 

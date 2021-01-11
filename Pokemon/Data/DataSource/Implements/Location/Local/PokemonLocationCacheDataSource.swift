@@ -25,6 +25,8 @@ class PokemonLocationCacheDataSource: PokemonLocationLocalDataSource {
         return Completable.create { [weak self] completable -> Disposable in
             self?.dictionary = locations
             
+            completable(.completed)
+            
             return Disposables.create()
         }
         .subscribeOn(scheduler)

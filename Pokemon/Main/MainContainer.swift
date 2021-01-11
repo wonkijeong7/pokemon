@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class MainContainer {
     private let pokemonRepository: PokemonRepository
@@ -49,6 +50,21 @@ class MainContainer {
     func searchViewController() -> PokemonSearchViewController {
         let viewController = UIStoryboard.initialViewController(name: "PokemonSearch", type: PokemonSearchViewController.self)
         let reactor = PokemonSearchViewReactor(searchUseCase: searchUseCase())
+        
+        viewController.reactor = reactor
+        viewController.descriptionViewProvider = self
+        
+        return viewController
+    }
+}
+
+extension MainContainer: PokemonDescriptionViewProvider {
+    func descriptionViewController(id: PokemonId, openLocationObserver: AnyObserver<PokemonId>) -> UIViewController {
+        let viewController = UIStoryboard.initialViewController(name: "PokemonDescription", type: PokemonDescriptionViewController.self)
+        let reactor = PokemonDescriptionViewReactor(pokemonId: id,
+                                                    showLocationObserver: openLocationObserver,
+                                                    descriptionUseCase: descriptionUseCase(),
+                                                    locationUseCase: locationUseCase())
         
         viewController.reactor = reactor
         

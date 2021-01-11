@@ -11,17 +11,15 @@ import RxCocoa
 import ReactorKit
 import RxDataSources
 
-protocol PokemonSearchViewProvider {
-    func pokemonSearchView() -> UIViewController
-}
-
 class PokemonSearchViewController: UIViewController, StoryboardView {
-    @IBOutlet private weak var searchTextField: UITextField!
-    @IBOutlet private weak var tableView: UITableView!
+    typealias Reactor = PokemonSearchViewReactor
     
     var disposeBag = DisposeBag()
     
-    typealias Reactor = PokemonSearchViewReactor
+    @IBOutlet private weak var searchTextField: UITextField!
+    @IBOutlet private weak var tableView: UITableView!
+    
+    var descriptionViewProvider: PokemonDescriptionViewProvider?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +45,7 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [tableView] in
                 tableView?.deselectRow(at: $0, animated: true)
-                reactor.action.onNext(.showPokemon(index: $0.row))
+                reactor.action.onNext(.showDescription(index: $0.row))
             })
             .disposed(by: disposeBag)
     }
@@ -62,7 +60,8 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
             .map { keyword, result in
                 result.map { SearchedPokemonTableViewCell.ViewModel(highlightedText: keyword, text: $0.matchedName) }
             }
-            .bind(to: tableView.rx.items) { (tableView, index, item) -> UITableViewCell in
+            .asDriver(onErrorJustReturn: [])
+            .drive(tableView.rx.items) { (tableView, index, item) -> UITableViewCell in
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchedPokemonTableViewCell") as? SearchedPokemonTableViewCell else {
                     return UITableViewCell()
                 }
@@ -77,13 +76,35 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
     func bindEvent(reactor: PokemonSearchViewReactor) {
         reactor.state.map { $0.event }
             .asDriver(onErrorJustReturn: nil)
-            .drive(onNext: {
+            .drive(onNext: { [weak self] in
                 guard let event = $0 else { return }
+                
                 switch event {
-                case .showPokemon(let id):
-                    print(id)
+                case .showDescription(let id):
+                    self?.openDescriptionView(id: id)
+                case .showLocation(let id):
+                    self?.openLocationView(id: id)
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func openDescriptionView(id: PokemonId) {
+        guard let viewProvider = descriptionViewProvider else { return }
+        
+        let openLocationPublisher = PublishSubject<PokemonId>()
+        
+        openLocationPublisher
+            .subscribe(onNext: { [weak self] in
+                self?.reactor?.action.onNext(.showLocation(id: $0))
+            })
+            .disposed(by: disposeBag)
+        
+        let viewController = viewProvider.descriptionViewController(id: id, openLocationObserver: openLocationPublisher.asObserver())
+        
+        self.present(viewController, animated: true, completion: nil)
+    }
+    
+    private func openLocationView(id: PokemonId) {
     }
 }
