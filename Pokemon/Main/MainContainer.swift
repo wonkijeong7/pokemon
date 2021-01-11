@@ -5,7 +5,7 @@
 //  Created by 정원기 on 2021/01/11.
 //
 
-import Foundation
+import UIKit
 
 class MainContainer {
     private let pokemonRepository: PokemonRepository
@@ -44,5 +44,26 @@ class MainContainer {
     
     func locationUseCase() -> PokemonLocationUseCase {
         return PokemonLocationDefaultUseCase(locationRepository: locationRepository)
+    }
+    
+    func searchViewController() -> PokemonSearchViewController {
+        let viewController = UIStoryboard.initialViewController(name: "PokemonSearch", type: PokemonSearchViewController.self)
+        let reactor = PokemonSearchViewReactor(searchUseCase: searchUseCase())
+        
+        viewController.reactor = reactor
+        
+        return viewController
+    }
+}
+
+extension UIStoryboard {
+    static func initialViewController<ViewController: UIViewController>(name: String, type: ViewController.Type) -> ViewController {
+        let storyboard = UIStoryboard(name: name, bundle: .main)
+        
+        guard let viewController = storyboard.instantiateInitialViewController() as? ViewController else {
+            fatalError("Initial view controller type mismatched: \(name)")
+        }
+        
+        return viewController
     }
 }

@@ -13,7 +13,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var mainContainer = MainContainer()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        initWindow()
+        
+        let searchViewController = mainContainer.searchViewController()
+        let navigationController = UINavigationController(rootViewController: searchViewController)
+        
+        window?.rootViewController = navigationController
+        
         return true
+    }
+    
+    private func initWindow() {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.makeKeyAndVisible()
+        
+        self.window = window
     }
 }
 
