@@ -180,6 +180,73 @@ class PokemonServerDataSourceTests: XCTestCase {
     }
 }
 
+class PokemonLocationServerDataSourceTests: XCTestCase {
+    var requester = TestJsonRequester()
+    lazy var dataSource = PokemonLocationServerDataSource(jsonRequester: requester)
+    
+    override func setUp() {
+        super.setUp()
+        
+        requester.clear()
+    }
+    
+    func test_decoding() throws {
+        requester.testJson = ["pokemons": [
+            ["lat":37.394919, "lng": 127.111138, "id": 1],
+            ["lat":37.378402, "lng": 127.114361, "id": 1],
+            ["lat":37.370507, "lng": 127.119276, "id": 1],
+            ["lat":37.374309, "lng": 127.127585, "id": 1],
+            ["lat":37.375699, "lng": 127.149718, "id": 1],
+            ["lat":37.394328, "lng": 127.110408, "id": 7],
+            ["lat":37.295599, "lng": 127.075105, "id": 7],
+            ["lat":37.412829, "lng": 127.112327, "id": 7],
+            ["lat":37.394317, "lng": 127.108250, "id": 7],
+            ["lat":37.392340, "lng": 127.118345, "id": 7],
+            ["lat":37.389459, "lng": 127.111940, "id": 7],
+            ["lat":37.500059, "lng": 127.026922, "id": 25],
+            ["lat":37.426700, "lng": 127.108434, "id": 25],
+            ["lat":37.360164, "lng": 126.988073, "id": 25],
+            ["lat":37.331506, "lng": 127.107377, "id": 25],
+            ["lat":37.350613, "lng": 127.173124, "id": 25],
+            ["lat":37.401250, "lng": 127.110660, "id": 52],
+            ["lat":37.388538, "lng": 127.083208, "id": 143],
+            ["lat":37.333621, "lng": 127.051043, "id": 143],
+            ["lat":37.325431, "lng": 127.074904, "id": 143]
+        ]]
+        
+        let fetch = dataSource.fetchKnownLocations()
+        let models = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(models.count, 5)
+        XCTAssertEqual(models[1]?.count, 5)
+        XCTAssertEqual(models[7]?.count, 6)
+        XCTAssertEqual(models[25]?.count, 5)
+        XCTAssertEqual(models[52]?.count, 1)
+        XCTAssertEqual(models[143]?.count, 3)
+    }
+    
+    func test_excludes_invalid_elements() throws {
+        requester.testJson = ["pokemons": [
+            ["lat":37.394919, "lng": 127.111138, "id": 1],
+            ["lat":37.378402, "lng": 127.114361, "id": 1],
+            ["id": 1],
+            ["lat":37.394328],
+            ["lng":127.075105, "id": 7],
+            ["lat":37.500059, "lng": 127.026922, "id": 25],
+            ["lat":37.426700, "lng": 127.108434, "id": "invalid"],
+            ["lat":37.426700, "lng": "invalid", "id": 25],
+        ]]
+        
+        let fetch = dataSource.fetchKnownLocations()
+        let models = try fetch.toBlocking().single()
+        
+        XCTAssertEqual(models.count, 2)
+        XCTAssertEqual(models[1]?.count, 2)
+        XCTAssertNil(models[7])
+        XCTAssertEqual(models[25]?.count, 1)
+    }
+}
+
 class TestJsonRequester: JsonRequestable {
     var testJson: Any?
     

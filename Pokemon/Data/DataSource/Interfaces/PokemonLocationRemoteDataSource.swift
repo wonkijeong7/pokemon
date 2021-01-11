@@ -9,5 +9,5 @@ import Foundation
 import RxSwift
 
 protocol PokemonLocationRemoteDataSource {
-    func fetchKnownLocations() -> Single<[PokemonLocation]>
+    func fetchKnownLocations() -> Single<[PokemonId: [Location]]>
 }

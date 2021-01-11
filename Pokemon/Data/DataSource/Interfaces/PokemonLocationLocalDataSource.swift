@@ -9,6 +9,6 @@ import Foundation
 import RxSwift
 
 protocol PokemonLocationLocalDataSource {
-    func location(id: PokemonId) -> Maybe<Location>
-    func setLocations(_ locations: [PokemonLocation]) -> Completable
+    func location(id: PokemonId) -> Single<[Location]>
+    func setLocations(_ locations: [PokemonId: [Location]]) -> Completable
 }

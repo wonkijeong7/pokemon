@@ -11,5 +11,5 @@ import RxSwift
 protocol PokemonLocationRepository {
     func update() -> Completable
     
-    func knownLocation(id: PokemonId) -> Maybe<Location>
+    func knownLocations(id: PokemonId) -> Single<[Location]>
 }

@@ -9,13 +9,13 @@ import Foundation
 import RxSwift
 
 protocol PokemonLocationUseCase {
-    func knownLocation(id: PokemonId) -> Maybe<Location>
+    func knownLocations(id: PokemonId) -> Single<[Location]>
 }
 
 struct PokemonLocationDefaultUseCase: PokemonLocationUseCase {
     let locationRepository: PokemonLocationRepository
     
-    func knownLocation(id: PokemonId) -> Maybe<Location> {
-        return locationRepository.knownLocation(id: id)
+    func knownLocations(id: PokemonId) -> Single<[Location]> {
+        return locationRepository.knownLocations(id: id)
     }
 }

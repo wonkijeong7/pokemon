@@ -11,8 +11,3 @@ struct Location {
     let latitude: Double
     let longitude: Double
 }
-
-struct PokemonLocation {
-    let id: PokemonId
-    let location: Location
-}
