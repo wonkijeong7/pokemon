@@ -10,6 +10,7 @@ import RxSwift
 
 protocol PokemonMetadataLocalDataSource {
     var names: Single<[PokemonName]> { get }
-    
     func setNames(_ names: [PokemonName]) -> Completable
+    
+    func clear() -> Completable
 }
