@@ -36,6 +36,7 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
         bindAction(reactor: reactor)
         bindSearchResult(reactor: reactor)
         bindEvent(reactor: reactor)
+        bindKeyboard()
     }
     
     func bindAction(reactor: PokemonSearchViewReactor) {
@@ -94,6 +95,31 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    func bindKeyboard() {
+        NotificationCenter.default.rx.notification(UIApplication.keyboardWillShowNotification)
+            .subscribe(onNext: { [weak self] in
+                if let keyboardFrame = $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                    self?.setTableViewInsets(bottomInset: keyboardFrame.cgRectValue.height)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+         NotificationCenter.default.rx.notification(UIApplication.keyboardWillHideNotification)
+            .subscribe(onNext: { [weak self] _ in
+                self?.setTableViewInsets(bottomInset: 0)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension PokemonSearchViewController {
+    private func setTableViewInsets(bottomInset: CGFloat) {
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
+        
+        tableView.contentInset = insets
+        tableView.scrollIndicatorInsets = insets
     }
     
     private func showErrorAlert(searchKeyword: String) {
