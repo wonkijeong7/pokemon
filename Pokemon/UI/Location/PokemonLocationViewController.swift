@@ -53,11 +53,27 @@ class PokemonLocationViewController: UIViewController, StoryboardView {
                 guard let event = $0 else { return }
                 
                 switch event {
+                case .showError:
+                    self?.showErrorAlert()
                 case .close:
                     self?.navigationController?.popViewController(animated: true)
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: "정보를 가져오는 데 실패했습니다.", message: "다시 시도해 주세요.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "재시도", style: .default, handler: { [reactor] _ in
+            reactor?.action.onNext(.initialize)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "닫기", style: .cancel, handler: { [reactor] _ in
+            reactor?.action.onNext(.close)
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 

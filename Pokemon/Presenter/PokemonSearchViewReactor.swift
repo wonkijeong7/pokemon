@@ -32,6 +32,7 @@ class PokemonSearchViewReactor: Reactor {
     }
     
     enum Event {
+        case showSearchError(keyword: String)
         case showDescription(id: PokemonId)
         case showLocation(id: PokemonId)
     }
@@ -67,7 +68,8 @@ extension PokemonSearchViewReactor {
             .asObservable()
             .map { .updateSearchResult($0) }
         
-        return .concat(updateKeyword, search)
+        return Observable.concat(updateKeyword, search)
+            .catchErrorJustReturn(.event(.showSearchError(keyword: keyword)))
     }
     
     private func selectMutation(index: Int) -> Observable<Mutation> {

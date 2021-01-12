@@ -16,7 +16,7 @@ class PokemonLocationViewReactor: Reactor {
     }
     
     enum Mutation {
-        case updateName(String)
+        case updateName(String?)
         case updateKnownLocations([Location])
         
         case event(Event)
@@ -30,6 +30,7 @@ class PokemonLocationViewReactor: Reactor {
     }
     
     enum Event {
+        case showError
         case close
     }
     
@@ -63,12 +64,14 @@ extension PokemonLocationViewReactor {
         let name = descriptionUseCase.name(id: pokemonId)
             .asObservable()
             .map { Mutation.updateName($0) }
+            .catchErrorJustReturn(.updateName(nil))
         
         let locations = locationUseCase.knownLocations(id: pokemonId)
             .asObservable()
             .map { Mutation.updateKnownLocations($0) }
         
-        return .merge(name, locations)
+        return Observable.merge(name, locations)
+            .catchErrorJustReturn(.event(.showError))
     }
 }
 

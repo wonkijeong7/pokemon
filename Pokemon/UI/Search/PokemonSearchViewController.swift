@@ -81,6 +81,8 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
                 guard let event = $0 else { return }
                 
                 switch event {
+                case .showSearchError(let keyword):
+                    self?.showErrorAlert(searchKeyword: keyword)
                 case .showDescription(let id):
                     self?.openDescriptionView(id: id)
                 case .showLocation(let id):
@@ -88,6 +90,16 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func showErrorAlert(searchKeyword: String) {
+        let alert = UIAlertController(title: "정보를 가져오는 데 실패했습니다.", message: "다시 시도해 주세요.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "재시도", style: .default, handler: { [reactor] _ in
+            reactor?.action.onNext(.search(keyword: searchKeyword))
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func openDescriptionView(id: PokemonId) {
