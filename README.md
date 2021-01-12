@@ -20,13 +20,13 @@ RxSwift, MVI(ReactorKit), Clean architecture, TDD
 - Data/RepositoryImplements: domain의 repository의 구현체
 - Data/DataSource/Interfaces: repoistory에서 참조하는 data source의 인터페이스
 - Data/DataSource/Implements: data source 구현체
+- Data/DataSource/Implements/Common: 네트워크 통신을 위한 프로토콜과 Alamofire를 사용한 구현체, Decoding을 위한 유틸리티 클래스
 
 ### ViewModels
-- Presenter layer
-- Reactor 클래스
+- Presenter layer, 각 화면을 위한 ViewModel(Reactor class)
 
 ### UI
-- ViewControllers
+- ViewControllers, Storyboards
 
 ### Main
 - MainContainer: Data source, Repository들을 가지고 있으며, Use case를 생성
