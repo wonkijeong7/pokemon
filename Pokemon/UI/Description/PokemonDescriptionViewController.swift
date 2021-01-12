@@ -19,6 +19,8 @@ class PokemonDescriptionViewController: UIViewController, StoryboardView {
 
     var disposeBag =  DisposeBag()
     
+    @IBOutlet private weak var coverButton: UIControl!
+    
     @IBOutlet private weak var loadingView: UIActivityIndicatorView!
     @IBOutlet private weak var contentView: UIView!
     
@@ -122,6 +124,13 @@ class PokemonDescriptionViewController: UIViewController, StoryboardView {
     }
     
     private func bindActions(reactor: PokemonDescriptionViewReactor) {
+        coverButton.rx.controlEvent(.touchUpInside)
+            .throttle(.milliseconds(30), scheduler: MainScheduler.instance)
+            .subscribe(onNext: {
+                reactor.action.onNext(.close)
+            })
+            .disposed(by: disposeBag)
+        
         showLocationButton.rx.controlEvent(.touchUpInside)
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(onNext: {
