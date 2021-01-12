@@ -1,5 +1,5 @@
 //
-//  PokemonPresenterTests.swift
+//  PokemonViewModelTests.swift
 //  PokemonTests
 //
 //  Created by 정원기 on 2021/01/12.
