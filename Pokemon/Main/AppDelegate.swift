@@ -7,17 +7,20 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     lazy var mainContainer = MainContainer()
+    lazy var viewProvider = ViewProvider(mainContainer: mainContainer)
     
     var disposeBag = DisposeBag()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         updateData()
         initializeView()
+        registerNotification()
         
         return true
     }
@@ -36,12 +39,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.makeKeyAndVisible()
         
-        let searchViewController = mainContainer.searchViewController()
+        let searchViewController = viewProvider.searchViewController()
         let navigationController = UINavigationController(rootViewController: searchViewController)
         
         window.rootViewController = navigationController
         
         self.window = window
+    }
+    
+    private func registerNotification() {
+        NotificationCenter.default.rx.notification(UIApplication.willEnterForegroundNotification)
+            .subscribe(onNext: { [weak self] _ in
+                self?.updateData()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

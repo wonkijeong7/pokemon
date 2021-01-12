@@ -11,7 +11,7 @@ import RxCocoa
 import ReactorKit
 
 protocol PokemonDescriptionViewProvider {
-    func descriptionViewController(id: PokemonId, openLocationObserver: AnyObserver<PokemonId>) -> UIViewController
+    func descriptionViewController(id: PokemonId, showLocationObserver: AnyObserver<PokemonId>) -> UIViewController
 }
 
 class PokemonDescriptionViewController: UIViewController, StoryboardView {

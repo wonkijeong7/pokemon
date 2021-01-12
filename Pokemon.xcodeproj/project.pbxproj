@@ -50,6 +50,7 @@
 		C8747B9325ACC7BA0090A0AB /* PokemonLocation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8747B9225ACC7BA0090A0AB /* PokemonLocation.storyboard */; };
 		C8747B9725ACC7C90090A0AB /* PokemonLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8747B9625ACC7C90090A0AB /* PokemonLocationViewController.swift */; };
 		C8747B9B25AD45B30090A0AB /* PokemonPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8747B9A25AD45B30090A0AB /* PokemonPresenterTests.swift */; };
+		C8747BA125AD672B0090A0AB /* ViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8747BA025AD672B0090A0AB /* ViewProvider.swift */; };
 		C8A641DB25A7739A00544771 /* PokemonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A641DA25A7739A00544771 /* PokemonRepository.swift */; };
 		C8A641DF25A7742C00544771 /* PokemonLocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A641DE25A7742C00544771 /* PokemonLocationRepository.swift */; };
 		C8A641E325A7747300544771 /* PokemonLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A641E225A7747200544771 /* PokemonLocationUseCase.swift */; };
@@ -118,6 +119,7 @@
 		C8747B9225ACC7BA0090A0AB /* PokemonLocation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PokemonLocation.storyboard; sourceTree = "<group>"; };
 		C8747B9625ACC7C90090A0AB /* PokemonLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonLocationViewController.swift; sourceTree = "<group>"; };
 		C8747B9A25AD45B30090A0AB /* PokemonPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonPresenterTests.swift; sourceTree = "<group>"; };
+		C8747BA025AD672B0090A0AB /* ViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProvider.swift; sourceTree = "<group>"; };
 		C8A641DA25A7739A00544771 /* PokemonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepository.swift; sourceTree = "<group>"; };
 		C8A641DE25A7742C00544771 /* PokemonLocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonLocationRepository.swift; sourceTree = "<group>"; };
 		C8A641E225A7747200544771 /* PokemonLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonLocationUseCase.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			children = (
 				C8AF8F1025A7435000DA5C48 /* AppDelegate.swift */,
 				C8747B5825AC8E200090A0AB /* MainContainer.swift */,
+				C8747BA025AD672B0090A0AB /* ViewProvider.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				C8AF8F1125A7435000DA5C48 /* AppDelegate.swift in Sources */,
 				C8747B4B25AC87340090A0AB /* PokemonLocationDefaultRepository.swift in Sources */,
 				C8747B2D25AC7C610090A0AB /* PokemonModel.swift in Sources */,
+				C8747BA125AD672B0090A0AB /* ViewProvider.swift in Sources */,
 				C8747B1325AC72D50090A0AB /* PokemonServerDataSource.swift in Sources */,
 				C8747B2525AC7C120090A0AB /* KeyedDecodingContainer+Utilities.swift in Sources */,
 				C8747B0125AC64DE0090A0AB /* AlamofireJsonRequester.swift in Sources */,

@@ -11,6 +11,10 @@ import RxCocoa
 import ReactorKit
 import RxDataSources
 
+protocol PokemonSearchViewProvider {
+    func searchViewController() -> UIViewController
+}
+
 class PokemonSearchViewController: UIViewController, StoryboardView {
     typealias Reactor = PokemonSearchViewReactor
     
@@ -113,7 +117,7 @@ class PokemonSearchViewController: UIViewController, StoryboardView {
             })
             .disposed(by: disposeBag)
         
-        let viewController = viewProvider.descriptionViewController(id: id, openLocationObserver: openLocationPublisher.asObserver())
+        let viewController = viewProvider.descriptionViewController(id: id, showLocationObserver: openLocationPublisher.asObserver())
         
         present(viewController, animated: true, completion: nil)
     }
