@@ -9,7 +9,6 @@ import XCTest
 @testable import Pokemon
 
 import RxSwift
-import RxTest
 import RxBlocking
 
 class PokemonUseCaseTests: XCTestCase {

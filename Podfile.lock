@@ -16,8 +16,6 @@ PODS:
   - RxRelay (5.1.1):
     - RxSwift (~> 5)
   - RxSwift (5.1.1)
-  - RxTest (5.1.1):
-    - RxSwift (~> 5)
   - WeakMapTable (1.1.0)
 
 DEPENDENCIES:
@@ -27,7 +25,6 @@ DEPENDENCIES:
   - RxCocoa
   - RxDataSources
   - RxSwift
-  - RxTest
 
 SPEC REPOS:
   trunk:
@@ -39,7 +36,6 @@ SPEC REPOS:
     - RxDataSources
     - RxRelay
     - RxSwift
-    - RxTest
     - WeakMapTable
 
 SPEC CHECKSUMS:
@@ -51,9 +47,8 @@ SPEC CHECKSUMS:
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
-  RxTest: 711632d5644dffbeb62c936a521b5b008a1e1faa
   WeakMapTable: d0327eda092be6a8f7c532942ae98dc7948f5d32
 
-PODFILE CHECKSUM: 3e9f2bfa3da9ba31ebd1e2e0fb641d3f51b2f66d
+PODFILE CHECKSUM: 828713f2d3488cad96de9b2d38c0c9feb3f59996
 
 COCOAPODS: 1.10.0

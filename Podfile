@@ -12,7 +12,6 @@ end
 target 'PokemonTests' do
   pod 'RxSwift'
   pod 'ReactorKit'
-  pod 'RxTest'
   pod 'RxBlocking'
 end
 
